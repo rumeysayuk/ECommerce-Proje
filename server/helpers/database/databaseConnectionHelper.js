@@ -1,15 +1,18 @@
-const mongoose=require("mongoose")
-const  databaseConnectionHelper=()=>{
-    mongoose
-        .connect(process.env.MONGO_URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
+const mongoose = require("mongoose")
+const databaseConnectionHelper = (app) => {
+    const PORT = process.env.PORT
+    try {
+        mongoose
+            .connect(process.env.MONGO_URL, {
+                useNewUrlParser: true,
+                useUnifiedTopology: true
+            }).then(() => {
+            app.listen(PORT, () => {
+                console.log(`Server running on port: ${PORT}`)})
         })
-        .then(()=>{
-            console.log("mongodb bağlantısı başarılı")
-        })
-        .catch((error)=>{
-            console.error(error);
-        })
+    } catch (e) {
+        console.log(e.message);
+    }
+
 }
-module.exports=databaseConnectionHelper;
+module.exports = databaseConnectionHelper;

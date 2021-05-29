@@ -25,7 +25,7 @@ const ProductSchema = new Schema({
         minlength: [10, MINLENGTH_ERROR],
         required: [true, REQUIRED_ERROR("Açıklama")]
     },
-    quantiyPerUnit: {
+    quantityPerUnit: {
         type: String,
         required: [true, REQUIRED_ERROR("Birim adedi")],
         min: [1, MIN_QUANTITY_PER_UNIT_ERROR]

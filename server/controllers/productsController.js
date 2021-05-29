@@ -3,7 +3,7 @@ const getAllProducts=async (req,res)=>{
     const products=await  Product.find();
     return res.status(200).json({
         success:true,
-        data:products,
+        products:products,
     })
 }
 const addProduct=async ()=>{
@@ -11,7 +11,7 @@ const addProduct=async ()=>{
         name:"keyboard",
         unitPrice:123,
         description:"ışıklı klavye",
-        quantiyPerUnit:"2"
+        quantityPerUnit:"2"
     });
 }
 module.exports={

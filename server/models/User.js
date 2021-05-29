@@ -31,7 +31,7 @@ const UserSchema = new Schema({
         default: "user",
         enum: ["user", "admin"]
     },
-    bloked: {
+    blocked: {
         type: Boolean,
         default: false
     },

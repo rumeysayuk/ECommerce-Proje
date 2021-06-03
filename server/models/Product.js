@@ -1,47 +1,50 @@
-const mongoose= require("mongoose");
-const {MINLENGTH_ERROR, MIN_PRICE_ERROR, MIN_QUANTITY_PER_UNIT_ERROR} = "../constants/messages/productMessages";
+const mongoose = require('mongoose');
+const {REQUIRED_ERROR} = require("../constants/messages/globalMessages");
+const {MIN_LENGTH_ERROR, MIN_PRICE_ERROR, MIN_QUANTITY_PER_UNIT_ERROR} = "../constants/messages/productMessages";
 
-const {REQUIRED_ERROR} =require("../constants/messages/globalMessages") ;
+const Schema = mongoose.Schema
 
-const Schema = mongoose.Schema;
 const ProductSchema = new Schema({
-
     // categoryId: {
-    //     type: mongoose.Schema.ObjectId,
-    //     ref: "Categories",
-    //     required: [true, REQUIRED_ERROR(this)]
+    //    type: mongoose.Schema.ObjectId,
+    //    required: [true, REQUIRED_ERROR(this)],
+    //    ref: "Categories"
     // },
+
     // user: {
-    //     type: mongoose.Schema.ObjectId,
-    //     ref: "Users",
-    //     required: [true, REQUIRED_ERROR(this)]
+    //    type: mongoose.Schema.ObjectId,
+    //    required: [true, REQUIRED_ERROR(this)],
+    //    ref: "Users"
     // },
+
+    name: {
+        type: String,
+        required: [true, REQUIRED_ERROR(this)],
+        minlength: [3, MIN_LENGTH_ERROR]
+    },
+
+    unitPrice : {
+        type: Number,
+        required: [true, REQUIRED_ERROR(this)],
+        min: [0, MIN_PRICE_ERROR],
+    },
+
+    description : {
+        type: String,
+        required: [true, REQUIRED_ERROR(this)],
+        minlength: [10, MIN_LENGTH_ERROR]
+    },
+
+    quantityPerUnit: {
+        type: String,
+        required: [true, REQUIRED_ERROR(this)],
+        minlength: [1, MIN_QUANTITY_PER_UNIT_ERROR],
+    },
+
     createdAt: {
         type: Date,
         default: Date.now
     },
-    description: {
-        type: String,
-        minlength: [10, MINLENGTH_ERROR],
-        required: [true, REQUIRED_ERROR("Açıklama")]
-    },
-    quantityPerUnit: {
-        type: String,
-        required: [true, REQUIRED_ERROR("Birim adedi")],
-        min: [1, MIN_QUANTITY_PER_UNIT_ERROR]
-    },
-
-    name: {
-        type: String,
-        minlength: [3, MINLENGTH_ERROR],
-        required: [true, REQUIRED_ERROR("Ürün ismi")]
-    },
-    unitPrice: {
-        type: Number,
-        required: [true, REQUIRED_ERROR("Ürün fiyatı")],
-        min: [0, MIN_PRICE_ERROR]
-    }
-
 })
 
 module.exports = mongoose.model("Products", ProductSchema);

@@ -3,16 +3,16 @@ import {Avatar, Button, Container, Grid, Paper, Typography} from "@material-ui/c
 import styles from "./styles";
 import {LockOutlined} from "@material-ui/icons";
 import Input from "../Toolbox/Input";
-import GoogleLogin from "react-google-login";
+import {GoogleLogin} from "react-google-login";
 import GoogleIcon from "../Toolbox/GoogleIcon";
-import {useDispatch} from "react-redux";
 import {useHistory} from "react-router-dom";
 import alertify from "alertifyjs";
-import * as actionTypes from "../../constants/actionTypes"
+import {useDispatch} from "react-redux";
+import * as actionTypes from "../../constants/actionTypes";
 import {signIn, signUp} from "../../actions/auths";
 
+const initialState = {firstName: "", lastName: "", email: "", password: "", confirmPassword: ""}
 
-const initialState = {firstName: "", lastName: "", password: "", email: "", confirmPassword: ""}
 const Auth = () => {
     const classes = styles();
     const [isSignUp, setIsSignUp] = useState(false)
@@ -21,13 +21,14 @@ const Auth = () => {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    const handleChange = (e) => setForm({...form, [e.target.name]: e.target.value})
+    const handleChange = (e) => setForm({...form, [e.target.name]: e.target.value});
 
     const switchMode = () => {
         setForm(initialState)
         setIsSignUp((prevIsSignUp) => !prevIsSignUp)
         setShowPassword(false)
     }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isSignUp) {
@@ -35,17 +36,18 @@ const Auth = () => {
         } else {
             dispatch(signIn(form, history))
         }
+        history.push("/");
     }
-    const googleSucces = async (res) => {
 
+    const googleSuccess = async (res) => {
         const result = res?.profileObj;
         const token = res?.tokenId;
-
         dispatch({type: actionTypes.AUTH, data: {result, token}})
         history.push("/");
     }
-    const googleFailure = () => (alertify.error("Google ile giriş yaparken bir hata oluştu", "Google hatası"))
 
+    const googleFailure = () => alertify.error(
+        "Google İle Giriş Yaparken Bir Hata Oluştu. Lütfen Daha Sonra Tekrar Deneyiniz..", "Google Hatası")
 
     return (
         <Container component={"main"} maxWidth={"xs"}>
@@ -67,29 +69,29 @@ const Auth = () => {
                                type={showPassword ? "text" : "password"}
                                handleShowPassword={() => setShowPassword(!showPassword)}/>
                         {isSignUp && (
-                            <Input name={"confirmPassword"} label={"Şifre tekrarı"} handleChange={handleChange}
+                            <Input name={"confirmPassword"} label={"Şifre Tekrarı"} handleChange={handleChange}
                                    type={"password"}/>
                         )}
                     </Grid>
-                    <Button type={"submit"} fullWidth variant={"contained"} color={"primary"}
-                            className={classes.submit}>
+                    <Button type={"submit"} fullWidth variant={"contained"} color={"primary"} className={classes.submit}>
                         {isSignUp ? "Kayıt Ol" : "Giriş Yap"}
                     </Button>
-                    <GoogleLogin clientId={"330061730723-v8n63csn687m4s1nuap664brvgn7u4ij.apps.googleusercontent.com"}
-                                 render={(renderProps) => (
-                                     <Button className={classes.googleButton} color={"primary"} fullWidth
-                                             onClick={renderProps.onClick} disabled={renderProps.disabled}
-                                             startIcon={<GoogleIcon/>} variant={"contained"}>
-                                         Google ile Giriş yap</Button>
-                                 )}
-                                 onSuccess={googleSucces}
-                                 onFailure={googleFailure}
-                                 cookiePolicy={"single_host_origin"}
+                    <GoogleLogin
+                        clientId="788491476362-m3mdu9kvmtojsjc31bcv4bjlrohooj0s.apps.googleusercontent.com"
+                        render={(renderProps) => (
+                            <Button className={classes.googleButton} color={"primary"} fullWidth onClick={renderProps.onClick}
+                                    disabled={renderProps.disabled} startIcon={<GoogleIcon/>} variant={"contained"}>
+                                Google İle Giriş Yap
+                            </Button>
+                        )}
+                        onSuccess={googleSuccess}
+                        onFailure={googleFailure}
+                        cookiePolicy={"single_host_origin"}
                     />
                     <Grid container justify={"flex-end"}>
                         <Grid item>
                             <Button onClick={switchMode}>
-                                {isSignUp ? "Zaten hesabın mevcut mu? Giriş yap" : "Hesabın yok mu ?Kayıt ol"}
+                                {isSignUp ? "Zaten Hesabın Mevcut Mu? Giriş Yap" : "Hesabın Yok Mu? Kayıt Ol"}
                             </Button>
                         </Grid>
                     </Grid>

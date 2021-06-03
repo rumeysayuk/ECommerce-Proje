@@ -2,13 +2,23 @@ import React from 'react';
 import {Card, CardActions, CardContent, CardMedia, IconButton, Typography} from "@material-ui/core";
 import {AddShoppingCart, Euro} from "@material-ui/icons";
 import useStyles from "./styles";
+import {useDispatch} from "react-redux";
+import * as actions from "../../../actions/cart";
+import {useHistory} from "react-router-dom";
 
 
 const Product = ({product}) => {
     const classes = useStyles();
+    const dispatch = useDispatch();
+    const history=useHistory();
 
+    const addToCart = ({product}) => {
+        dispatch(actions.addToCart(product))
+        history.push("/cart")
+
+
+    }
     return (
-
         <Card className={classes.root}>
             <CardMedia
                 className={classes.media}
@@ -24,8 +34,7 @@ const Product = ({product}) => {
             </CardContent>
             <CardActions disableSpacing className={classes.cardActions}>
                 <IconButton
-                    onClick={() => {
-                    }}
+                    onClick={addToCart}
                     aria-label={"Sepete Ekle"}>
                     <AddShoppingCart/>
                 </IconButton>

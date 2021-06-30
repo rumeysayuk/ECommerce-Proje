@@ -86,7 +86,7 @@ const Auth = () => {
                         )}
                         onSuccess={googleSuccess}
                         onFailure={googleFailure}
-                        cookiePolicy={"single_host_origin"}
+                        cookiePolicy={"single_hoszzt_origin"}
                     />
                     <Grid container justify={"flex-end"}>
                         <Grid item>
